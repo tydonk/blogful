@@ -21,7 +21,7 @@ def seed():
     Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
     deserunt mollit anim id est laborum."""
 
-    for i in range(25):
+    for i in range(1,26):
         entry = Entry(
             title="Test Entry #{}".format(i),
             content=content

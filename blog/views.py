@@ -21,7 +21,7 @@ def entries(page=1):
     has_prev = page_index > 0
     
     entries = session.query(Entry)
-    entries = entries.order_by(Entry.datetime.desc())
+    entries = entries.order_by(Entry.datetime.asc())
     entries = entries[start:end]
     
     return render_template("entries.html",
@@ -46,3 +46,7 @@ def add_entry_post():
     session.commit()
     return redirect(url_for("entries"))
     
+@app.route("/entry/<id>", methods=["GET"])
+def view_entry(id):
+    entry = session.query(Entry).get(id)
+    return render_template("entry.html", id = id, entry = entry)
