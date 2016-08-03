@@ -21,7 +21,7 @@ def entries(page=1):
     has_prev = page_index > 0
     
     entries = session.query(Entry)
-    entries = entries.order_by(Entry.datetime.asc())
+    entries = entries.order_by(Entry.datetime.desc())
     entries = entries[start:end]
     
     return render_template("entries.html",
