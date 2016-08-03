@@ -57,7 +57,7 @@ def edit_entry_get(id):
     return render_template("edit_entry.html", id = id, entry = entry)
     
 @app.route("/entry/<id>/edit", methods=["POST"])
-def edit_entry_put(id):
+def edit_entry_post(id):
     entry = session.query(Entry).get(id)
     entry.title = request.form["title"]
     entry.content = request.form["content"]
