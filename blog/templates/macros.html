@@ -12,9 +12,24 @@
             <a href="/entry/{{ entry.id }}">{{ entry.title }}</a>
         </h1>
         {{ entry.content | markdown }}
-        <h5>
-            <a href="/entry/{{ entry.id }}/edit">Edit entry</a>
-        </h5>
+        <div class="display: inline-block; text-left spacing: 2px">
+            <h6>
+                <a href="/entry/{{ entry.id }}/edit">Edit</a>
+                <a href="/entry/{{ entry.id }}/delete">Delete</a>
+            </h6>
+        </div>
+    </div>
+    
+</div>
+{% endmacro %}
+
+{% macro render_entry_text(entry) %}
+<div class="row">
+    <div class="col-md-10">
+        <h1>
+            <a href="/entry/{{ entry.id }}">{{ entry.title }}</a>
+        </h1>
+        {{ entry.content | markdown }}
     </div>
     
 </div>
