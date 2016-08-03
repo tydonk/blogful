@@ -12,6 +12,10 @@
             <a href="/entry/{{ entry.id }}">{{ entry.title }}</a>
         </h1>
         {{ entry.content | markdown }}
+        <h5>
+            <a href="/entry/{{ entry.id }}/edit">Edit entry</a>
+        </h5>
     </div>
+    
 </div>
 {% endmacro %}
