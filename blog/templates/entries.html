@@ -2,6 +2,24 @@
 {% extends "base.html" %}
 {% block content %}
 
+<div align="right">
+    <h6>Entries per page:</h6>
+    <div class="btn-group">
+  <button type="button" class="btn btn-default">{{ limit }}</button>
+  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-right">
+    <li><a href="/?limit=5">5</a></li>
+    <li><a href="/?limit=10">10</a></li>
+    <li><a href="/?limit=25">25</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="/?limit={{ count }}">All</a></li>
+  </ul>
+</div>
+</div>    
+
 {% for entry in entries %}
 {{ macros.render_entry(entry) }}
 {% endfor %}
