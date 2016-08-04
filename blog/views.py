@@ -6,9 +6,28 @@ from .database import session, Entry
 @app.route("/")
 @app.route("/page/<int:page>")
 def entries(page=1):
+    
+    # Get the limit from the URL
+    
     limit = request.args.get('limit', 10)
     
-    paginate_by = int(limit)
+    # Make sure the limit is an integer
+    try:
+        paginate_by = int(limit)
+    except ValueError:
+        limit = 10
+        paginate_by = int(limit)
+    
+    # Make sure the limit is greater than zero
+    try:
+        1/int(limit)
+    except ZeroDivisionError:
+        limit = 10
+        paginate_by = int(limit)
+        
+    # Restrict the limit to no more than 999
+    
+        
     # Zero-indexed page
     page_index = page - 1
 
@@ -32,7 +51,7 @@ def entries(page=1):
         page=page,
         total_pages=total_pages,
         limit=limit,
-        count=count
+        count=count,
     )
     
 @app.route("/entry/add", methods=["GET"])
