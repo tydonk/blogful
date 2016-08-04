@@ -7,35 +7,34 @@ from .database import session, Entry
 @app.route("/page/<int:page>")
 def entries(page=1):
     
-    # Get the limit from the URL
-    
+    # Get the limit from the URL and convert it to an integer
     limit = request.args.get('limit', 10)
     
-    # Make sure the limit is an integer
+    # Make sure the limit is a positive integer
     try:
-        paginate_by = int(limit)
+        limit = int(limit)
+        limit = abs(limit)
     except ValueError:
         limit = 10
-        paginate_by = int(limit)
     
     # Make sure the limit is greater than zero
     try:
         1/int(limit)
     except ZeroDivisionError:
         limit = 10
-        paginate_by = int(limit)
-        
-    # Restrict the limit to no more than 999
     
+    if limit > 100:
+        limit = 100    
         
+    paginate_by = limit    
+    
     # Zero-indexed page
     page_index = page - 1
-
+    
     count = session.query(Entry).count()
-
+    
     start = page_index * paginate_by
     end = start + paginate_by
-
     total_pages = (count - 1) // paginate_by + 1
     has_next = page_index < total_pages - 1
     has_prev = page_index > 0
