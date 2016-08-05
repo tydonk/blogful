@@ -45,5 +45,15 @@ def adduser():
     session.add(user)
     session.commit()
     
+from flask_migrate import Migrate, MigrateCommand
+from blog.database import Base
+
+class DB(object):
+    def __init__(self, metadata):
+        self.metadata = metadata
+        
+migrate = Migrate(app, DB(Base.metadata))
+manager.add_command('db', MigrateCommand)
+    
 if __name__ == "__main__":
     manager.run()
