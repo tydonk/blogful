@@ -1,8 +1,13 @@
 from flask import render_template, request, redirect, url_for, flash
 from . import app
 from .database import session, Entry, User
-from flask_login import login_required, login_user
+from flask_login import login_required, login_user, current_user
 from werkzeug.security import check_password_hash
+
+from flask import flash
+from flask_login import login_user, logout_user
+from werkzeug.security import check_password_hash
+from .database import User
 
 @app.route("/")
 @app.route("/page/<int:page>")
@@ -51,7 +56,7 @@ def entries(page=1):
         page=page,
         total_pages=total_pages,
         limit=limit,
-        count=count,
+        count=count
     )
     
 @app.route("/entry/add", methods=["GET"])
@@ -65,6 +70,7 @@ def add_entry_post():
     entry = Entry(
         title=request.form["title"],
         content=request.form["content"],
+        author=current_user
     )
     session.add(entry)
     session.commit()
@@ -76,11 +82,13 @@ def view_entry(id):
     return render_template("entry.html", id = id, entry = entry)
     
 @app.route("/entry/<id>/edit", methods=["GET"])
+@login_required
 def edit_entry_get(id):
     entry = session.query(Entry).get(id)
     return render_template("edit_entry.html", id = id, entry = entry)
     
 @app.route("/entry/<id>/edit", methods=["POST"])
+@login_required
 def edit_entry_post(id):
     entry = session.query(Entry).get(id)
     entry.title = request.form["title"]
@@ -89,11 +97,13 @@ def edit_entry_post(id):
     return redirect(url_for("entries"))
 
 @app.route("/entry/<id>/delete", methods=["GET"])
+@login_required
 def delete_entry_get(id):
     entry = session.query(Entry).get(id)
     return render_template("delete_entry.html", id = id, entry = entry)
 
 @app.route("/entry/<id>/delete", methods=["POST"])
+@login_required
 def delete_entry(id):
     entry = session.query(Entry).get(id)
     session.delete(entry)
@@ -103,11 +113,6 @@ def delete_entry(id):
 @app.route("/login", methods=["GET"])
 def login_get():
     return render_template("login.html")
-    
-from flask import flash
-from flask_login import login_user
-from werkzeug.security import check_password_hash
-from .database import User
 
 @app.route("/login", methods=["POST"])
 def login_post():
@@ -117,6 +122,12 @@ def login_post():
     if not user or not check_password_hash(user.password, password):
         flash("Incorrect username or password", "danger")
         return redirect(url_for("login_get"))
-        
+    
     login_user(user)
     return redirect(request.args.get('next') or url_for("entries"))
+    
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("entries"))

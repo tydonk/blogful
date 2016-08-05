@@ -30,8 +30,17 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{{ url_for('entries') }}">Blogful by TK</a>
+                    <a class="navbar-brand" href="{{ url_for('entries') }}">Home</a>
+                    {% if not current_user.is_authenticated %}
+                    <a class="navbar-brand" href="{{ url_for('login_get') }}">Login</a>
+                    {% endif %}
+                    
+                    {% if current_user.is_authenticated %}
+                    <a class="navbar-brand" href="{{ url_for('add_entry_get') }}">Add Entry</a>
+                    <a class="navbar-brand" href="{{ url_for('logout') }}">Logout</a>
+                    {% endif %}
                 </div>
+                
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                     </ul>
