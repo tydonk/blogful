@@ -85,7 +85,10 @@ def view_entry(id):
 @login_required
 def edit_entry_get(id):
     entry = session.query(Entry).get(id)
-    return render_template("edit_entry.html", id = id, entry = entry)
+    if current_user == entry.author:
+        return render_template("edit_entry.html", id = id, entry = entry)
+    else:
+        return redirect(url_for("entries"))
     
 @app.route("/entry/<id>/edit", methods=["POST"])
 @login_required
@@ -100,7 +103,10 @@ def edit_entry_post(id):
 @login_required
 def delete_entry_get(id):
     entry = session.query(Entry).get(id)
-    return render_template("delete_entry.html", id = id, entry = entry)
+    if current_user == entry.author:
+        return render_template("delete_entry.html", id = id, entry = entry)
+    else:
+        return redirect(url_for("entries"))    
 
 @app.route("/entry/<id>/delete", methods=["POST"])
 @login_required
