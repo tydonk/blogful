@@ -5,3 +5,4 @@ flask-script
 flask-migrate
 mistune
 psycopg2
+splinter
