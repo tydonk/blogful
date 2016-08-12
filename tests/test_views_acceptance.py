@@ -49,6 +49,34 @@ class TestViews(unittest.TestCase):
         button.click()
         self.assertEqual(self.browser.url, "http://127.0.0.1:8080/login")
         
+    '''def test_view_single_entry(self):
+        # Go to home page
+        self.browser.visit("http://127.0.0.1:8080/")
+        # Click on entry title
+        entry_click = self.browser.find_by_css('h1').first.click()
+        self.assertEqual(self.browser'''
+        
+    def test_delete_entry_logged_in(self):
+        # Login to blog
+        self.test_login_correct()
+        # Add new entry
+        self.browser.visit("http://127.0.0.1:8080/entry/add")
+        self.browser.fill("title", "test post")
+        self.browser.fill("content", "integration testing post")
+        self.browser.find_by_css("button[type=submit]").first.click()
+        # Delete the entry
+        self.browser.click_link_by_text('Delete')
+        
+    def test_logout(self):
+        # Login to blog
+        self.test_login_correct()
+        # Click on 'Logout' link
+        self.browser.click_link_by_text('Logout')
+        # Check to see if 'Logout' link is visible
+        self.assertEqual(self.browser.is_element_present_by_text('Logout'), False)
+        # Check to see if 'Login' link is visible
+        self.assertEqual(self.browser.is_element_present_by_text('Login'), True)
+        
     def tearDown(self):
         """ Test teardown """
         # Remove the tables and their data from the database
