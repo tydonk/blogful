@@ -56,7 +56,7 @@ class TestViews(unittest.TestCase):
         entry_click = self.browser.find_by_css('h1').first.click()
         self.assertEqual(self.browser'''
         
-    def test_delete_entry_logged_in(self):
+    def test_add_entry(self):
         # Login to blog
         self.test_login_correct()
         # Add new entry
@@ -64,8 +64,32 @@ class TestViews(unittest.TestCase):
         self.browser.fill("title", "test post")
         self.browser.fill("content", "integration testing post")
         self.browser.find_by_css("button[type=submit]").first.click()
-        # Delete the entry
-        self.browser.click_link_by_text('Delete')
+        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")
+        
+    def test_edit_entry(self):
+        # Login to blog
+        self.test_login_correct()
+        # Click edit link on top entry
+        self.browser.visit("http://127.0.0.1:8080/")
+        self.browser.click_link_by_partial_href('/edit')
+        # Enter new title and contents
+        self.browser.fill("title", "more tests")
+        self.browser.fill("content", "more content! amazing!")
+        # Submit the changes
+        self.browser.find_by_css("button[type=submit]").first.click()
+        # Check to see if you are routed back to the main page after submission
+        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")
+    
+    def test_delete_entry(self):
+        # Login to blog
+        self.test_login_correct()
+        # Click delete link on top entry
+        self.browser.visit("http://127.0.0.1:8080/")
+        self.browser.click_link_by_partial_href('/delete')
+        # Confirm delete action
+        self.browser.find_by_css("button[type=submit]").first.click()
+        # Check to see if you are routed to the main page after deletion
+        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")
         
     def test_logout(self):
         # Login to blog

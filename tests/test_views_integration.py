@@ -46,7 +46,7 @@ class TestViews(unittest.TestCase):
         self.assertEqual(entry.title, "Test Entry")
         self.assertEqual(entry.content, "Test content")
         self.assertEqual(entry.author, self.user)
-        
+
     def tearDown(self):
         """ Test teardown """
         session.close()
