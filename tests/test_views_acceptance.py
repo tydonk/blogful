@@ -33,7 +33,7 @@ class TestViews(unittest.TestCase):
         self.process.start()
         time.sleep(1)
         
-    def test_login_correct(self):
+    '''def test_login_correct(self):
         self.browser.visit("http://127.0.0.1:8080/login")
         self.browser.fill("email", "alice@example.com")
         self.browser.fill("password", "test")
@@ -47,18 +47,15 @@ class TestViews(unittest.TestCase):
         self.browser.fill("password", "test")
         button = self.browser.find_by_css("button[type=submit]")
         button.click()
-        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/login")
-        
-    '''def test_view_single_entry(self):
-        # Go to home page
-        self.browser.visit("http://127.0.0.1:8080/")
-        # Click on entry title
-        entry_click = self.browser.find_by_css('h1').first.click()
-        self.assertEqual(self.browser'''
+        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/login")'''
         
     def test_add_entry(self):
         # Login to blog
-        self.test_login_correct()
+        self.browser.visit("http://127.0.0.1:8080/login")
+        self.browser.fill("email", "alice@example.com")
+        self.browser.fill("password", "test")
+        button = self.browser.find_by_css("button[type=submit]")
+        button.click()
         # Add new entry
         self.browser.visit("http://127.0.0.1:8080/entry/add")
         self.browser.fill("title", "test post")
@@ -68,28 +65,27 @@ class TestViews(unittest.TestCase):
         
     def test_edit_entry(self):
         # Login to blog
-        self.test_login_correct()
+        self.browser.visit("http://127.0.0.1:8080/login")
+        self.browser.fill("email", "alice@example.com")
+        self.browser.fill("password", "test")
+        button = self.browser.find_by_css("button[type=submit]")
+        button.click()
         # Click edit link on top entry
-        self.browser.visit("http://127.0.0.1:8080/")
-        self.browser.click_link_by_partial_href('/edit')
+        edit_link = self.browser.find_link_by_partial_text('edit')[0]
+        edit_link.click()
         # Enter new title and contents
-        self.browser.fill("title", "more tests")
-        self.browser.fill("content", "more content! amazing!")
+        self.browser.fill("title", "edited test post")
+        self.browser.fill("content", "edited integration testing post")
         # Submit the changes
         self.browser.find_by_css("button[type=submit]").first.click()
         # Check to see if you are routed back to the main page after submission
         self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")
     
-    def test_delete_entry(self):
+    #def test_delete_entry(self):
         # Login to blog
-        self.test_login_correct()
         # Click delete link on top entry
-        self.browser.visit("http://127.0.0.1:8080/")
-        self.browser.click_link_by_partial_href('/delete')
         # Confirm delete action
-        self.browser.find_by_css("button[type=submit]").first.click()
         # Check to see if you are routed to the main page after deletion
-        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")
         
     def test_logout(self):
         # Login to blog
