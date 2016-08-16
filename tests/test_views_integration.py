@@ -55,13 +55,7 @@ class TestViews(unittest.TestCase):
         
     def test_edit_entry(self):
         self.simulate_login()
-        
-        response = self.client.post("/entry/add", data={
-            "title": "Test Entry",
-            "content": "Test content"
-        })
-        
-        self.assertEqual(response.status_code, 302)
+        self.test_add_entry()
         
         response_edit = self.client.post("/entry/1/edit", data={
             "title": "Edited Test Entry",
@@ -76,7 +70,18 @@ class TestViews(unittest.TestCase):
         self.assertEqual(entry.title, "Edited Test Entry")
         self.assertEqual(entry.content, "Edited test content")
         self.assertEqual(entry.author, self.user)
-    
+        
+    def test_delete_entry(self):
+        self.simulate_login()
+        self.test_add_entry()
+        entry = session.query(Entry).first()
+        entries = session.query(Entry).all()
+        session.delete(entry)
+        session.commit()
+        
+        entries = session.query(Entry).all()
+        self.assertEqual(len(entries), 0)
+        
     def tearDown(self):
         """ Test teardown """
         session.close()
