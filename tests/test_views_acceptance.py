@@ -33,7 +33,7 @@ class TestViews(unittest.TestCase):
         self.process.start()
         time.sleep(1)
         
-    '''def test_login_correct(self):
+    def test_login_correct(self):
         self.browser.visit("http://127.0.0.1:8080/login")
         self.browser.fill("email", "alice@example.com")
         self.browser.fill("password", "test")
@@ -47,7 +47,7 @@ class TestViews(unittest.TestCase):
         self.browser.fill("password", "test")
         button = self.browser.find_by_css("button[type=submit]")
         button.click()
-        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/login")'''
+        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/login")
         
     def test_add_entry(self):
         # Login to blog
@@ -74,30 +74,47 @@ class TestViews(unittest.TestCase):
         self.browser.visit("http://127.0.0.1:8080/entry/1/")
         self.assertEqual(self.browser.url, "http://127.0.0.1:8080/entry/1/")
         
-    '''def test_edit_entry(self):
+    def test_edit_entry(self):
         # Login to blog
         self.browser.visit("http://127.0.0.1:8080/login")
         self.browser.fill("email", "alice@example.com")
         self.browser.fill("password", "test")
         button = self.browser.find_by_css("button[type=submit]")
         button.click()
+        # Add new entry
+        self.browser.visit("http://127.0.0.1:8080/entry/add")
+        self.browser.fill("title", "test post")
+        self.browser.fill("content", "acceptance testing post")
+        self.browser.find_by_css("button[type=submit]").first.click()
         # Click edit link on top entry
-        self.browser.visit("http://127.0.0.1:8080/entry/1/edit/")
+        self.browser.click_link_by_partial_href('edit')
         # Enter new title and contents
         self.browser.fill("title", "edited test post")
-        self.browser.fill("content", "edited integration testing post")
-        # Submit the changes
+        self.browser.fill("content", "edited acceptance testing post")
         self.browser.find_by_css("button[type=submit]").first.click()
-        # Check to see if you are routed back to the main page after submission
-        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")'''
+        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")
     
-    #def test_delete_entry(self):
+    def test_delete_entry(self):
         # Login to blog
-        # Click delete link on top entry
-        # Confirm delete action
-        # Check to see if you are routed to the main page after deletion
+        self.browser.visit("http://127.0.0.1:8080/login")
+        self.browser.fill("email", "alice@example.com")
+        self.browser.fill("password", "test")
+        button = self.browser.find_by_css("button[type=submit]")
+        button.click()
+        # Add new entry
+        self.browser.visit("http://127.0.0.1:8080/entry/add")
+        self.browser.fill("title", "test post")
+        self.browser.fill("content", "acceptance testing post")
+        self.browser.find_by_css("button[type=submit]").first.click()
+        # Delete entry
+        self.browser.click_link_by_partial_href('delete')
+        button = self.browser.find_by_css("button[type=submit]")
+        button.click()
+        # Make sure browser puts you back on home 
+        self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")
         
-    '''def test_logout(self):
+        
+    def test_logout(self):
         # Login to blog
         self.test_login_correct()
         # Click on 'Logout' link
@@ -105,7 +122,7 @@ class TestViews(unittest.TestCase):
         # Check to see if 'Logout' link is visible
         self.assertEqual(self.browser.is_element_present_by_text('Logout'), False)
         # Check to see if 'Login' link is visible
-        self.assertEqual(self.browser.is_element_present_by_text('Login'), True)'''
+        self.assertEqual(self.browser.is_element_present_by_text('Login'), True)
         
     def tearDown(self):
         """ Test teardown """
