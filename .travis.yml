@@ -7,7 +7,7 @@ env:
 before_script:
     - psql -c 'create database "blogful-test";' -U postgres
 script:
-    - PYTHONPATH=. python3 tests/test_filters.py
+    - PYTHONPATH=. python3 tests/test_filter.py
     - PYTHONPATH=. python3 tests/test_views_integration.py
     - PYTHONPATH=. python3 tests/test_views_acceptance.py
     # Add any other tests here
