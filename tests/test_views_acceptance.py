@@ -51,11 +51,7 @@ class TestViews(unittest.TestCase):
         
     def test_add_entry(self):
         # Login to blog
-        self.browser.visit("http://127.0.0.1:8080/login")
-        self.browser.fill("email", "alice@example.com")
-        self.browser.fill("password", "test")
-        button = self.browser.find_by_css("button[type=submit]")
-        button.click()
+        self.test_login_correct()
         # Add new entry
         self.browser.visit("http://127.0.0.1:8080/entry/add")
         self.browser.fill("title", "test post")
@@ -65,22 +61,14 @@ class TestViews(unittest.TestCase):
         
     def test_view_single_entry(self):
         # Login to blog
-        self.browser.visit("http://127.0.0.1:8080/login")
-        self.browser.fill("email", "alice@example.com")
-        self.browser.fill("password", "test")
-        button = self.browser.find_by_css("button[type=submit]")
-        button.click()
+        self.test_login_correct()
         # Click on top entry title
         self.browser.visit("http://127.0.0.1:8080/entry/1/")
         self.assertEqual(self.browser.url, "http://127.0.0.1:8080/entry/1/")
         
     def test_edit_entry(self):
         # Login to blog
-        self.browser.visit("http://127.0.0.1:8080/login")
-        self.browser.fill("email", "alice@example.com")
-        self.browser.fill("password", "test")
-        button = self.browser.find_by_css("button[type=submit]")
-        button.click()
+        self.test_login_correct()
         # Add new entry
         self.browser.visit("http://127.0.0.1:8080/entry/add")
         self.browser.fill("title", "test post")
@@ -96,11 +84,7 @@ class TestViews(unittest.TestCase):
     
     def test_delete_entry(self):
         # Login to blog
-        self.browser.visit("http://127.0.0.1:8080/login")
-        self.browser.fill("email", "alice@example.com")
-        self.browser.fill("password", "test")
-        button = self.browser.find_by_css("button[type=submit]")
-        button.click()
+        self.test_login_correct()
         # Add new entry
         self.browser.visit("http://127.0.0.1:8080/entry/add")
         self.browser.fill("title", "test post")
@@ -112,8 +96,7 @@ class TestViews(unittest.TestCase):
         button.click()
         # Make sure browser puts you back on home 
         self.assertEqual(self.browser.url, "http://127.0.0.1:8080/")
-        
-        
+    
     def test_logout(self):
         # Login to blog
         self.test_login_correct()
