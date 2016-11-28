@@ -3,7 +3,10 @@
     <div class="col-md-2 text-right metadata">
         <ul class="list-unstyled">
             <li>
-                {{ entry.datetime | dateformat("%m/%d/%y") }}
+                {{ entry.datetime | dateformat("%x") }}
+            </li>
+            <li>
+                {{ entry.datetime | dateformat("%X") }}
             </li>
         </ul>
     </div>
